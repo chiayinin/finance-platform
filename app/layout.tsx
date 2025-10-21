@@ -1,8 +1,8 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-import { zhTW } from '@clerk/localizations'
-import { neobrutalism } from '@clerk/themes'
+import { zhTW } from '@clerk/localizations';
+import { neobrutalism } from '@clerk/themes';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,11 +27,11 @@ export default function RootLayout({
         layout: {
           socialButtonsPlacement: 'bottom',
           socialButtonsVariant: 'iconButton',
+          unsafe_disableDevelopmentModeWarnings: true,
         },
         variables: {
           colorPrimary: '#6366f1',
         }
-
     }}>
       <html lang="en">
         <body
