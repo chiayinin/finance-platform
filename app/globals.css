@@ -1,7 +1,11 @@
+@layer theme, base, clerk, components, utilities;
 @import "tailwindcss";
-@import "tw-animate-css";
+@import '@clerk/themes/shadcn.css';
+@import '../styles/_components.scss'
 
-@custom-variant dark (&:is(.dark *));
+/* @import "tw-animate-css"; */
+
+/* @custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
@@ -119,4 +123,4 @@
   body {
     @apply bg-background text-foreground;
   }
-}
+} */
