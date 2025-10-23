@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server';
 const isPublicRoute = createRouteMatcher([ // 需要進行身份驗證的路由
   // '/sign-in(.*)' 指 sign-in 後面接的所有路徑
   '/', // 只要進入首頁就要登入
+  // '/api(.*)', // 打 API 的話需要先登入
 ]);
 
 export default clerkMiddleware(async (auth, request) => {
