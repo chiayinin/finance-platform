@@ -11,7 +11,6 @@ export const Header = () => {
           <Navigation />
         </div>
       </div>
-      Header Component.
     </div>
   </div>
   );
