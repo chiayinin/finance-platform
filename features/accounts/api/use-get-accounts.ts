@@ -6,7 +6,6 @@ export const useGetAccounts = () => {
     queryKey: ['accounts'],
     queryFn: async () => {
       const respones = await client.api.accounts.$get();
-      console.log('respones', respones);
 
       // 因為不是 axios 不會自動處理錯誤
       if(!respones.ok) {

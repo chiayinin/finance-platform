@@ -1,17 +1,33 @@
 import { Hono } from 'hono';
+import { clerkMiddleware, getAuth } from '@hono/clerk-auth';
+import { HTTPException } from 'hono/http-exception';
+import { eq } from 'drizzle-orm';
+
 import { db } from '@/db/drizzle';
 import { accounts } from '@/db/schema';
 
 const app = new Hono()
-  .get('/', async (cxt) => {
-    const data = await db
-      .select({
-        id: accounts.id,
-        name: accounts.name,
-      })
-      .from(accounts);
+  .get(
+    '/',
+    clerkMiddleware(),
+    async (ctx) => {
+      const auth = getAuth(ctx);
 
-    return cxt.json({ data });
-  });
+      if(!auth?.userId) {
+        throw new HTTPException(401, {
+          res: ctx.json({ error: "未經授權" }, 401),
+        });
+      }
+
+      const data = await db
+        .select({
+          id: accounts.id,
+          name: accounts.name,
+        })
+        .from(accounts)
+        .where(eq(accounts.userId, auth.userId));
+
+      return ctx.json({ data });
+    });
 
 export default app;
