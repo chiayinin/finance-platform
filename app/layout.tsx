@@ -5,6 +5,7 @@ import { zhTW } from '@clerk/localizations';
 import { neobrutalism } from '@clerk/themes';
 import { QueryProviders } from "@/providers/query-provider";
 import { SheetProvider } from "@/providers/sheet-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,7 +41,8 @@ export default function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           <QueryProviders>
-            <SheetProvider></SheetProvider>
+            <SheetProvider />
+            <Toaster />
             {children}
           </QueryProviders>
         </body>
