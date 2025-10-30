@@ -1,14 +1,43 @@
 "use client"
 
 import { useNewAccount } from "@/features/accounts/hooks/use-new-account";
+import { columns, Payment } from "./columns";
 
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardHeader,
-  CardTitle
+  CardTitle,
+  CardContent
 } from "@/components/ui/card";
+import { DataTable } from "@/components/ui/data-table";
+
+async function getData(): Promise<Payment[]> {
+  return [
+    {
+      id: "728ed52f",
+      amount: 100,
+      status: "pending",
+      email: "m@example.com",
+    },
+  ]
+};
+
+const data: Payment[] = [
+  {
+    id: "728ed52f",
+    amount: 100,
+    status: "pending",
+    email: "m@example.com",
+  },
+  {
+    id: "728ed53f",
+    amount: 200,
+    status: "pending",
+    email: "aaa@example.com",
+  },
+];
 
 const AccountsPage = () => {
   const newAccount = useNewAccount();
@@ -25,6 +54,14 @@ const AccountsPage = () => {
             新增
           </Button>
         </CardHeader>
+        <CardContent>
+          <DataTable
+          columns={columns}
+          data={data}
+          filterKey="email"
+          onDelete={() => {}}
+          disabled={false} />
+        </CardContent>
       </Card>
     </div>
   </>);
