@@ -1,13 +1,9 @@
 "use client";
 
 import { useUser } from "@clerk/nextjs";
-import { log } from "console";
 
 export const WelcomeMsg = () => {
   const { user, isLoaded } = useUser();
-
-  console.log('user:', user);
-
 
   return(
     <div className="space-y-2 mb-4">
