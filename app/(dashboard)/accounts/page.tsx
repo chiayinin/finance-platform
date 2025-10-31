@@ -58,9 +58,8 @@ const AccountsPage = () => {
             data={accounts}
             filterKey="name"
             onDelete={(row) => {
-              console.log('delete row:', row);
-
               const ids = row.map((r) => r.original.id);
+
               deleteAccounts.mutate({ ids });
             }}
             disabled={isDisabled} />
