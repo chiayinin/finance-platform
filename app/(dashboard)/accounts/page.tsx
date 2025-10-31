@@ -1,6 +1,7 @@
 "use client"
 
 import { useNewAccount } from "@/features/accounts/hooks/use-new-account";
+import { useBulkDeleteAccount } from "@/features/accounts/api/use-bulk-delete";
 import { columns } from "./columns";
 
 import { Loader2, Plus } from "lucide-react";
@@ -11,14 +12,16 @@ import {
   CardTitle,
   CardContent
 } from "@/components/ui/card";
-import { DataTable } from "@/components/ui/data-table";
+import { DataTable } from "@/components/data-table";
 import { useGetAccounts } from "@/features/accounts/api/use-get-accounts";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const AccountsPage = () => {
   const newAccount = useNewAccount();
   const accountsQuery = useGetAccounts();
+  const deleteAccounts = useBulkDeleteAccount();
   const accounts = accountsQuery.data || [];
+  const isDisabled = accountsQuery.isLoading || deleteAccounts.isPending;
 
   if(accountsQuery.isLoading) {
     return(
@@ -54,8 +57,13 @@ const AccountsPage = () => {
             columns={columns}
             data={accounts}
             filterKey="name"
-            onDelete={() => {}}
-            disabled={false} />
+            onDelete={(row) => {
+              console.log('delete row:', row);
+
+              const ids = row.map((r) => r.original.id);
+              deleteAccounts.mutate({ ids });
+            }}
+            disabled={isDisabled} />
         </CardContent>
       </Card>
     </div>
