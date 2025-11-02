@@ -123,6 +123,6 @@ const app = new Hono()
 
       return ctx.json({ data });
     }
-  );
+  )
 
 export default app;
