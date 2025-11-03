@@ -1,8 +1,8 @@
 "use client";
 
 import { Edit, MoreHorizontal, Trash } from "lucide-react";
-import { useOpenAccount } from "@/features/accounts/hooks/use-open-account";
-import { useDeleteAccount } from "@/features/accounts/api/use-delete-account";
+import { useOpenCategory } from "@/features/categories/hooks/use-open-category";
+import { useDeleteCategory } from "@/features/categories/api/use-delete-category";
 import { useConfirm } from "@/hooks/use-confirm";
 
 import { Button } from "@/components/ui/button";
@@ -20,10 +20,10 @@ type Props = {
 export const Actions = ({ id }: Props) => {
   const [ConfirmDialog, confirm] = useConfirm(
     "你確定嗎？",
-    "你即將刪除此 ID"
+    "你即將刪除此類別"
   );
-  const deleteMutation = useDeleteAccount(id);
-  const { onOpen } = useOpenAccount();
+  const deleteMutation = useDeleteCategory(id);
+  const { onOpen } = useOpenCategory();
 
   const handleDelete = async () => {
     const ok = await confirm();
