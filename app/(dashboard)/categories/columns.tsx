@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 
-export type ResponseType = InferResponseType<typeof client.api.accounts.$get, 200>['data'][0];
+export type ResponseType = InferResponseType<typeof client.api.categories.$get, 200>['data'][0];
 
 export const columns: ColumnDef<ResponseType>[] = [
   {
