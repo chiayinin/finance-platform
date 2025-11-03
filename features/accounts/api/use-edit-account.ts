@@ -4,10 +4,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { client } from "@/lib/hono";
 
-type ResponesType = InferResponseType<typeof client.api.accounts.$post>; // 推斷 route 的請求資料型別
-type RequestType = InferRequestType<typeof client.api.accounts.$post>["json"]; // 推斷 route 的回傳資料型別
+type ResponesType = InferResponseType<typeof client.api.accounts[':id']['$patch']>; // 推斷 route 的請求資料型別
+type RequestType = InferRequestType<typeof client.api.accounts[':id']['$patch']>["json"]; // 推斷 route 的回傳資料型別
 
-export const useCreateAccount = () => {
+export const useEditAccount = (id?: string) => {
   // 快取控制器:
   // 手動更新快取（queryClient.setQueryData）
   // 重新抓取資料（queryClient.invalidateQueries）
@@ -19,15 +19,20 @@ export const useCreateAccount = () => {
   Error,
   RequestType>({
     mutationFn: async (json) => {
-      const response = await client.api.accounts.$post({ json });
+      const response = await client.api.accounts[':id']['$patch']({
+        json,
+        param: { id }
+      });
       return await response.json();
     },
     onSuccess: () => {
-      toast.success("成功建立帳號");
+      toast.success("成功更新帳號");
+      queryClient.invalidateQueries({ queryKey: ['account', { id }] });
       queryClient.invalidateQueries({ queryKey: ['accounts'] });
+      // TODO: Invalidate summary and transactions
     },
     onError: () => {
-      toast.error("建立帳號失敗")
+      toast.error("編輯帳號失敗")
     },
   });
 
