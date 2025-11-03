@@ -1,8 +1,10 @@
 "use client";
 
-import { Edit, MoreHorizontal } from "lucide-react";
-
+import { Edit, MoreHorizontal, Trash } from "lucide-react";
 import { useOpenAccount } from "@/features/accounts/hooks/use-open-account";
+import { useDeleteAccount } from "@/features/accounts/api/use-delete-account";
+import { useConfirm } from "@/hooks/use-confirm";
+
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -16,9 +18,23 @@ type Props = {
 };
 
 export const Actions = ({ id }: Props) => {
+  const [ConfirmDialog, confirm] = useConfirm(
+    "你確定嗎？",
+    "你即將刪除此 ID"
+  );
+  const deleteMutation = useDeleteAccount(id);
   const { onOpen } = useOpenAccount();
 
+  const handleDelete = async () => {
+    const ok = await confirm();
+
+    if(ok) {
+      deleteMutation.mutate();
+    }
+  };
+
   return(<>
+    <ConfirmDialog></ConfirmDialog>
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="size-8 p-0">
@@ -27,11 +43,18 @@ export const Actions = ({ id }: Props) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem
-          disabled={false}
+          disabled={deleteMutation.isPending}
           onClick={() => onOpen(id)}
         >
           <Edit className="size-4 mr-2" />
-          Edit
+          編輯
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          disabled={deleteMutation.isPending}
+          onClick={handleDelete}
+        >
+          <Trash className="size-4 mr-2" />
+          刪除
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

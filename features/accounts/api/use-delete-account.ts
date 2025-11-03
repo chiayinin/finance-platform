@@ -6,7 +6,7 @@ import { client } from "@/lib/hono";
 
 type ResponesType = InferResponseType<typeof client.api.accounts[':id']['$delete']>; // 推斷 route 的請求資料型別
 
-export const useDELETEAccount = (id?: string) => {
+export const useDeleteAccount = (id?: string) => {
   // 快取控制器:
   // 手動更新快取（queryClient.setQueryData）
   // 重新抓取資料（queryClient.invalidateQueries）
