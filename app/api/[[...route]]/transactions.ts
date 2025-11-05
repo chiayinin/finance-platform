@@ -42,6 +42,7 @@ const app = new Hono()
       const data = await db
         .select({
           id: transactions.id,
+          date: transactions.date,
           category: categories.name,
           categoryId: transactions.categoryId,
           payee: transactions.payee,
@@ -85,13 +86,19 @@ const app = new Hono()
       const [data] = await db
         .select({
           id: transactions.id,
-          name: transactions.name,
+          date: transactions.date,
+          categoryId: transactions.categoryId,
+          payee: transactions.payee,
+          amount: transactions.amount,
+          notes: transactions.notes,
+          accountId: transactions.accountId
         })
         .from(transactions)
+        .innerJoin(accounts, eq(transactions.accountId, accounts.id))
         .where(
           and(
-            eq(transactions.userId, auth.userId),
-            eq(transactions.id, id)
+            eq(transactions.id, id),
+            eq(accounts.userId, auth.userId),
           ),
         );
 
