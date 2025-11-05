@@ -1,0 +1,246 @@
+import { Hono } from 'hono';
+import z from 'zod';
+import { parse, subDays } from 'date-fns';
+import { clerkMiddleware, getAuth } from '@hono/clerk-auth';
+import { HTTPException } from 'hono/http-exception';
+import { and, eq, inArray, gte, lte } from 'drizzle-orm';
+
+import { db } from '@/db/drizzle';
+import { transactions, insertTransactionSchema, categories, accounts } from '@/db/schema';
+import { zValidator } from "@hono/zod-validator";
+import { createId } from "@paralleldrive/cuid2";
+
+const app = new Hono()
+  .get(
+    '/',
+    zValidator('query', z.object({
+      from: z.string().optional(),
+      to: z.string().optional(),
+      accountId: z.string().optional(),
+    })),
+    clerkMiddleware(),
+    async (ctx) => {
+      const auth = getAuth(ctx);
+      const { from, to, accountId } = ctx.req.valid('query');
+
+      if(!auth?.userId) {
+        throw new HTTPException(401, {
+          res: ctx.json({ error: "未經授權" }, 401),
+        });
+      }
+
+      const defaultTo = new Date();
+      const defaultFrom = subDays(defaultTo, 30);
+
+      const startDate = from
+        ? parse(from, "yyyy-MM-dd", new Date())
+        : defaultFrom;
+      const endDate = to
+        ? parse(to, "yyyy-MM-dd", new Date())
+        : defaultTo;
+
+      const data = await db
+        .select({
+          id: transactions.id,
+          category: categories.name,
+          categoryId: transactions.categoryId,
+          payee: transactions.payee,
+          amount: transactions.amount,
+          notes: transactions.notes,
+          account: accounts.name,
+          accountId: transactions.accountId
+        })
+        .from(transactions)
+        .innerJoin(accounts, eq(transactions.accountId, accounts.id))
+        .leftJoin(categories, eq(transactions.categoryId, categories.id))
+        .where(
+          and(
+            accountId ? eq(transactions.accountId, accountId) : undefined,
+            eq(accounts.userId, auth.userId),
+            gte(transactions.date, startDate),
+            lte(transactions.date, endDate),
+          )
+        )
+
+      return ctx.json({ data });
+    })
+  .get(
+    '/:id',
+    zValidator('param', z.object({
+      id: z.string().optional(),
+    })),
+    clerkMiddleware(),
+    async (ctx) => {
+      const auth = getAuth(ctx);
+      const { id } = ctx.req.valid('param');
+
+      if(!id) {
+        return ctx.json({ error: "找不到此 ID" }, 400);
+      }
+
+      if(!auth?.userId) {
+        return ctx.json({ error: "未經授權" }, 401);
+      }
+
+      const [data] = await db
+        .select({
+          id: transactions.id,
+          name: transactions.name,
+        })
+        .from(transactions)
+        .where(
+          and(
+            eq(transactions.userId, auth.userId),
+            eq(transactions.id, id)
+          ),
+        );
+
+      if(!data) {
+        return ctx.json({ error: "找不到 404" }, 404);
+      }
+
+      return ctx.json({ data });
+    },
+  )
+  .post(
+    '/',
+    clerkMiddleware(),
+    zValidator('json', insertTransactionSchema.pick({
+      name: true,
+    })),
+    async (ctx) => {
+      const auth = getAuth(ctx);
+      const values = ctx.req.valid('json');
+
+      if(!auth?.userId) {
+        return ctx.json({ error: "未經授權" }, 401);
+      }
+
+      const [data] = await db.insert(transactions).values({
+        id: createId(),
+        userId: auth.userId,
+        ...values,
+      }).returning();
+
+      return ctx.json({ data });
+    })
+  .post(
+    'bulk-delete',
+    clerkMiddleware(), // 驗證使用者的身份，確保使用者已經登入了。
+    zValidator(
+      'json',
+      z.object({
+        ids: z.array(z.string()),
+      }),
+    ),
+    async (ctx) => {
+      const auth = getAuth(ctx);
+      const values = ctx.req.valid('json');
+
+      if(!auth?.userId) {
+        return ctx.json({ error: '未經授權' }, 401);
+      }
+
+      const data = await db
+        .delete(transactions)
+        .where( // 設定刪除條件
+          and( // 多個條件都要成立
+            eq(transactions.userId, auth.userId), // 「等於」條件
+            inArray(transactions.id, values.ids) // a 的值在 b 陣列中
+          )
+        )
+        .returning({
+          id: transactions.id,
+        });
+
+      return ctx.json({ data });
+    }
+  )
+  .patch(
+    '/:id',
+    clerkMiddleware(),
+    zValidator(
+      'param',
+      z.object({
+        id: z.string().optional(),
+      }),
+    ),
+    zValidator(
+      'json',
+      insertTransactionSchema.pick({
+        name: true,
+      }),
+    ),
+    async (ctx) => {
+      const auth = getAuth(ctx);
+      const { id } = ctx.req.valid('param');
+      const values = ctx.req.valid('json');
+
+      if(!id) {
+        return ctx.json({ error: "沒有這個 ID" }, 400);
+      }
+
+      if(!auth?.userId) {
+        return ctx.json({ error: "未經授權" }, 401);
+      }
+
+      const [data] = await db
+        .update(transactions)
+        .set(values)
+        .where(
+          and(
+            eq(transactions.userId, auth.userId),
+            eq(transactions.id, id)
+          ),
+        )
+        .returning();
+
+      if(!data) {
+        return ctx.json({ error: "找不到 404" }, 404);
+      }
+
+      return ctx.json({ data });
+    }
+  )
+  .delete(
+    '/:id',
+    clerkMiddleware(),
+    zValidator(
+      'param',
+      z.object({
+        id: z.string().optional(),
+      }),
+    ),
+    async (ctx) => {
+      const auth = getAuth(ctx);
+      const { id } = ctx.req.valid('param');
+
+      if(!id) {
+        return ctx.json({ error: "沒有這個 ID" }, 400);
+      }
+
+      if(!auth?.userId) {
+        return ctx.json({ error: "未經授權" }, 401);
+      }
+
+      const [data] = await db
+        .delete(transactions)
+        .where(
+          and(
+            eq(transactions.userId, auth.userId),
+            eq(transactions.id, id)
+          ),
+        )
+        .returning({ // 在刪除的同時回傳被刪除的資料欄位
+          id: transactions.id
+        });
+
+      if(!data) {
+        return ctx.json({ error: "找不到 404" }, 404);
+      }
+
+      return ctx.json({ data });
+    }
+  );
+
+export default app;
