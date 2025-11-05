@@ -3,7 +3,7 @@ import z from 'zod';
 import { parse, subDays } from 'date-fns';
 import { clerkMiddleware, getAuth } from '@hono/clerk-auth';
 import { HTTPException } from 'hono/http-exception';
-import { and, eq, inArray, gte, lte } from 'drizzle-orm';
+import { and, eq, inArray, gte, lte, sql } from 'drizzle-orm';
 
 import { db } from '@/db/drizzle';
 import { transactions, insertTransactionSchema, categories, accounts } from '@/db/schema';
@@ -147,13 +147,20 @@ const app = new Hono()
         return ctx.json({ error: '未經授權' }, 401);
       }
 
+      const transactionsToDelete = db.$with('transactions_to_delete').as(
+        db.select({ id:transactions.id }).from(transactions)
+        .innerJoin(accounts, eq(transactions.accountId, accounts.id))
+        .where(and(
+          inArray(transactions.id, values.ids),
+          eq(accounts.userId, auth.userId),
+        )),
+      );
+
       const data = await db
+        .with(transactionsToDelete)
         .delete(transactions)
-        .where( // 設定刪除條件
-          and( // 多個條件都要成立
-            eq(transactions.userId, auth.userId), // 「等於」條件
-            inArray(transactions.id, values.ids) // a 的值在 b 陣列中
-          )
+        .where(
+          inArray(transactions.id, sql`(select id from ${transactionsToDelete})`)
         )
         .returning({
           id: transactions.id,
