@@ -112,8 +112,8 @@ const app = new Hono()
   .post(
     '/',
     clerkMiddleware(),
-    zValidator('json', insertTransactionSchema.pick({
-      name: true,
+    zValidator('json', insertTransactionSchema.omit({
+      id: true,
     })),
     async (ctx) => {
       const auth = getAuth(ctx);
@@ -125,7 +125,6 @@ const app = new Hono()
 
       const [data] = await db.insert(transactions).values({
         id: createId(),
-        userId: auth.userId,
         ...values,
       }).returning();
 
