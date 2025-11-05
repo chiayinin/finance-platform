@@ -180,8 +180,8 @@ const app = new Hono()
     ),
     zValidator(
       'json',
-      insertTransactionSchema.pick({
-        name: true,
+      insertTransactionSchema.omit({
+        id: true,
       }),
     ),
     async (ctx) => {
@@ -197,14 +197,22 @@ const app = new Hono()
         return ctx.json({ error: "未經授權" }, 401);
       }
 
+      const transactionsToUpdate = db.$with('transactions_to_update').as(
+        db.select({ id:transactions.id })
+        .from(transactions)
+        .innerJoin(accounts, eq(transactions.accountId, accounts.id))
+        .where(and(
+          eq(transactions.id, id),
+          eq(accounts.userId, auth.userId),
+        )),
+      );
+
       const [data] = await db
+        .with(transactionsToUpdate)
         .update(transactions)
         .set(values)
         .where(
-          and(
-            eq(transactions.userId, auth.userId),
-            eq(transactions.id, id)
-          ),
+          inArray(transactions.id, sql`(select id from ${transactionsToUpdate})`)
         )
         .returning();
 
