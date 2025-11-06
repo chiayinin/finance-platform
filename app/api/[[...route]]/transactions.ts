@@ -131,6 +131,38 @@ const app = new Hono()
       return ctx.json({ data });
     })
   .post(
+    '/bulk-create',
+    clerkMiddleware(),
+    zValidator(
+      'json',
+      z.array(
+        insertTransactionSchema.omit({
+          id: true,
+        })
+      ),
+    ),
+    async (ctx) => {
+      const auth = getAuth(ctx);
+      const values = ctx.req.valid('json');
+
+      if(!auth?.userId) {
+        return ctx.json({ error: "未經授權" }, 401);
+      }
+
+      const data = await db
+        .insert(transactions)
+        .values(
+          values.map((value) => ({
+            id: createId(),
+            ...value,
+          }))
+        )
+        .returning();
+
+      return ctx.json({ data });
+    },
+  )
+  .post(
     'bulk-delete',
     clerkMiddleware(), // 驗證使用者的身份，確保使用者已經登入了。
     zValidator(
