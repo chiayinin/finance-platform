@@ -12,7 +12,7 @@ export const useGetTransaction = (id?: string) => {
 
       // 因為不是 axios 不會自動處理錯誤
       if(!respones.ok) {
-        throw new Error("無法取得此交易資訊。");
+        throw new Error("無法取得此交易紀錄。");
       }
 
       const { data } = await respones.json();

@@ -23,12 +23,12 @@ export const useCreateTransaction = () => {
       return await response.json();
     },
     onSuccess: () => {
-      toast.success("成功建立交易資訊");
+      toast.success("成功建立交易紀錄");
       queryClient.invalidateQueries({ queryKey: ['tr.transactions'] });
       // TODO: Invalidate summary
     },
     onError: () => {
-      toast.error("建立交易資訊失敗")
+      toast.error("建立交易紀錄失敗")
     },
   });
 

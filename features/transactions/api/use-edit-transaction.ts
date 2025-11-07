@@ -26,13 +26,13 @@ export const useEditTransaction = (id?: string) => {
       return await response.json();
     },
     onSuccess: () => {
-      toast.success("成功更新交易資訊");
+      toast.success("成功更新交易紀錄");
       queryClient.invalidateQueries({ queryKey: ['transaction', { id }] });
       queryClient.invalidateQueries({ queryKey: ['transactions'] });
       // TODO: Invalidate summary
     },
     onError: () => {
-      toast.error("編輯交易資訊失敗")
+      toast.error("編輯交易紀錄失敗")
     },
   });
 

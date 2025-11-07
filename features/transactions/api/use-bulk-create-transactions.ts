@@ -23,12 +23,12 @@ export const useBulkCreateTransactions = () => {
       return await response.json();
     },
     onSuccess: () => {
-      toast.success("成功建立所有的交易資訊");
+      toast.success("成功建立所有的交易紀錄");
       queryClient.invalidateQueries({ queryKey: ['transactions'] });
       // TODO: Also inalidate summary
     },
     onError: () => {
-      toast.error("建立所有的交易資訊失敗")
+      toast.error("建立所有的交易紀錄失敗")
     },
   });
 

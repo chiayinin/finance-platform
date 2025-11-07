@@ -23,13 +23,13 @@ export const useDeleteTransaction = (id?: string) => {
       return await response.json();
     },
     onSuccess: () => {
-      toast.success("成功刪除交易資訊");
+      toast.success("成功刪除交易紀錄");
       queryClient.invalidateQueries({ queryKey: ['transaction', { id }] });
       queryClient.invalidateQueries({ queryKey: ['tr.transactions'] });
       // TODO: Invalidate summary and transactions
     },
     onError: () => {
-      toast.error("刪除交易資訊失敗")
+      toast.error("刪除交易紀錄失敗")
     },
   });
 

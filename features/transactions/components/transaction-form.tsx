@@ -5,7 +5,8 @@ import { Trash } from "lucide-react";
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { insertAccountSchema } from "@/db/schema";
+import { insertAccountSchema, insertTransactionSchema } from "@/db/schema";
+
 import {
   Form,
   FormControl,
@@ -14,27 +15,46 @@ import {
   FormLabel,
 } from "@/components/ui/form"
 
-// 挑出 name 欄位，建立新的 schema
-const formSchema = insertAccountSchema.pick({
-  name: true,
+// 從零開始定義一個物件 schema
+const formSchema = z.object({
+  date: z.coerce.date(),
+  accountId: z.string(),
+  categoryId: z.string().nullable().optional(),
+  payee: z.string(),
+  amount: z.string(),
+  notes: z.string().nullable().optional(),
+});
+
+// 從既有 schema 中「移除欄位」建立新 schema
+const apiSchema = insertTransactionSchema.omit({
+  id: true,
 });
 
 type FormValues = z.input<typeof formSchema>;
+type ApiFormValues = z.input<typeof apiSchema>;
 
 type Props = {
   id?: string;
   defaultValues?: FormValues;
-  onSubmit: (values: FormValues) => void;
+  onSubmit: (values: ApiFormValues) => void;
   onDelete?: () => void;
   disabled?: boolean;
+  accountOptions: { lable: string; value: string; }[];
+  categoryOptions: { lable: string; value: string; }[];
+  onCreateAccount: (name: string) => void;
+  onCreateCategory: (name: string) => void;
 };
 
-export const AccountForm = ({
+export const TransactionForm = ({
   id,
   defaultValues,
   onSubmit,
   onDelete,
   disabled,
+  accountOptions,
+  categoryOptions,
+  onCreateAccount,
+  onCreateCategory,
 }: Props) =>{
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),

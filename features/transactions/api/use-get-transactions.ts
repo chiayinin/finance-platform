@@ -22,7 +22,7 @@ export const useGetTransactions = () => {
 
       // 因為不是 axios 不會自動處理錯誤
       if(!respones.ok) {
-        throw new Error("無法取得全部的交易資訊。");
+        throw new Error("無法取得全部的交易紀錄。");
       }
 
       const { data } = await respones.json();
