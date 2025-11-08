@@ -3,9 +3,12 @@ import { z } from "zod"
 import { Trash } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod"
 
-import { insertAccountSchema, insertTransactionSchema } from "@/db/schema";
+import { insertTransactionSchema } from "@/db/schema";
 import { Select } from "@/components/select";
+import { DatePicker } from "@/components/date-picker";
+import { AmountInput } from "@/components/amount-input";
 
+import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -76,6 +79,22 @@ export const TransactionForm = ({
       <form
         onSubmit={form.handleSubmit(handleSubmit)}
         className="space-y-4 px-4">
+          {/* Date */}
+          <FormField
+            name="date"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <DatePicker
+                    value={field.value}
+                    onChange={field.onChange}
+                    disabled={disabled}
+                  />
+                </FormControl>
+              </FormItem>
+            )}>
+          </FormField>
           {/* Account */}
           <FormField
             name="accountId"
@@ -111,6 +130,58 @@ export const TransactionForm = ({
                     value={field.value}
                     onChange={field.onChange}
                     disabled={disabled}
+                  />
+                </FormControl>
+              </FormItem>
+            )}>
+          </FormField>
+          {/* Payee */}
+          <FormField
+            name="categoryId"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>收款人</FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={disabled}
+                    placeholder="新增一位收款人"
+                    {...field}
+                  />
+                </FormControl>
+              </FormItem>
+            )}>
+          </FormField>
+          {/* Amount */}
+          <FormField
+            name="amount"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>數量</FormLabel>
+                <FormControl>
+                  <AmountInput
+                    {...field}
+                    disabled={disabled}
+                    placeholder="輸入數字"
+                  />
+                </FormControl>
+              </FormItem>
+            )}>
+          </FormField>
+          {/* Notes */}
+          <FormField
+            name="notes"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>收款人</FormLabel>
+                <FormControl>
+                  <Textarea
+                    {...field}
+                    value={field.value ?? ""}
+                    disabled={disabled}
+                    placeholder="選填備註"
                   />
                 </FormControl>
               </FormItem>

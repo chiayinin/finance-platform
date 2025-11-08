@@ -25,7 +25,7 @@ export const DatePicker = ({
 }: Props) => {
   return(
   <Popover>
-    <PopoverTrigger>
+    <PopoverTrigger asChild>
       <Button
         disabled={disabled}
         variant="outline"
@@ -33,9 +33,10 @@ export const DatePicker = ({
           "w-full justify-start text-left font-normal",
           !value && "text-muted-foreground",
         )}
-      />
+      >
       <CalendarIcon className="size-4 mr-2" />
       {value ? format(value, "PPP") : <span>選擇日期</span>}
+      </Button>
     </PopoverTrigger>
     <PopoverContent>
       <Calendar
