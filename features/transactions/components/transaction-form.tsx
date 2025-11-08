@@ -1,19 +1,20 @@
-import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Trash } from "lucide-react";
+import { zodResolver } from "@hookform/resolvers/zod"
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { insertAccountSchema, insertTransactionSchema } from "@/db/schema";
+import { Select } from "@/components/select";
 
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-} from "@/components/ui/form"
+} from "@/components/ui/form";
 
 // 從零開始定義一個物件 schema
 const formSchema = z.object({
@@ -39,8 +40,8 @@ type Props = {
   onSubmit: (values: ApiFormValues) => void;
   onDelete?: () => void;
   disabled?: boolean;
-  accountOptions: { lable: string; value: string; }[];
-  categoryOptions: { lable: string; value: string; }[];
+  accountOptions: { label: string; value: string; }[];
+  categoryOptions: { label: string; value: string; }[];
   onCreateAccount: (name: string) => void;
   onCreateCategory: (name: string) => void;
 };
@@ -62,7 +63,8 @@ export const TransactionForm = ({
   });
 
   const handleSubmit = (values: FormValues) => {
-    onSubmit(values);
+    console.log({values});
+
   };
 
   const handleDelete = () => {
@@ -74,17 +76,41 @@ export const TransactionForm = ({
       <form
         onSubmit={form.handleSubmit(handleSubmit)}
         className="space-y-4 px-4">
+          {/* Account */}
           <FormField
-            name="name"
+            name="accountId"
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>帳戶名稱</FormLabel>
                 <FormControl>
-                  <Input
+                  <Select
+                    placeholder="選擇一個帳戶"
+                    options={accountOptions}
+                    onCreate={onCreateAccount}
+                    value={field.value}
+                    onChange={field.onChange}
                     disabled={disabled}
-                    placeholder="例如: 現金、匯款、信用卡"
-                    {...field}
+                  />
+                </FormControl>
+              </FormItem>
+            )}>
+          </FormField>
+          {/* Category */}
+          <FormField
+            name="categoryId"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>類別</FormLabel>
+                <FormControl>
+                  <Select
+                    placeholder="選擇一個類別"
+                    options={categoryOptions}
+                    onCreate={onCreateCategory}
+                    value={field.value}
+                    onChange={field.onChange}
+                    disabled={disabled}
                   />
                 </FormControl>
               </FormItem>

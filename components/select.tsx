@@ -15,16 +15,16 @@ type Props = {
 
 export const Select = ({
   value,
-  onchange,
+  onChange,
   onCreate,
   options = [],
   disabled,
   placeholder
 }: Props) => {
   const onSelect = (
-    option: SingleValue<{ label: StringConstructor, value: string }>
+    option: SingleValue<{ label: string, value: string }>
   ) => {
-    onchange(option?.value);
+    onChange(option?.value);
   };
 
   const formattedValue = useMemo(() => {

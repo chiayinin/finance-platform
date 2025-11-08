@@ -87,7 +87,7 @@ export const NewTransactioinSheet = () => {
           : (
             <TransactionForm
               onSubmit={onSubmit}
-              disabled={false}
+              disabled={isPending}
               categoryOptions={categoryOptions}
               onCreateCategory={onCreateCategory}
               accountOptions={accountOptions}
