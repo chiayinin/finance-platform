@@ -4,6 +4,7 @@ import { Trash } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod"
 
 import { insertTransactionSchema } from "@/db/schema";
+import { converAmountToMiliunits } from "@/lib/utils";
 import { Select } from "@/components/select";
 import { DatePicker } from "@/components/date-picker";
 import { AmountInput } from "@/components/amount-input";
@@ -66,8 +67,13 @@ export const TransactionForm = ({
   });
 
   const handleSubmit = (values: FormValues) => {
-    console.log({values});
+    const amount = parseFloat(values.amount);
+    const amountInMiliunits = converAmountToMiliunits(amount);
 
+    onSubmit({
+      ...values,
+      amount: amountInMiliunits,
+    });
   };
 
   const handleDelete = () => {
@@ -137,7 +143,7 @@ export const TransactionForm = ({
           </FormField>
           {/* Payee */}
           <FormField
-            name="categoryId"
+            name="payee"
             control={form.control}
             render={({ field }) => (
               <FormItem>
@@ -188,7 +194,7 @@ export const TransactionForm = ({
             )}>
           </FormField>
           <Button className="w-full" disabled={disabled}>
-            {id ? "儲存變更" : "建立帳號"}
+            {id ? "儲存變更" : "建立交易紀錄"}
           </Button>
           {!!id && (
             <Button
@@ -199,7 +205,7 @@ export const TransactionForm = ({
               variant="outline"
             >
               <Trash className="size-4 mr-2"/>
-              刪除帳號
+              刪除交易紀錄
             </Button>
           )}
       </form>
