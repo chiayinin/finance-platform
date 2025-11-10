@@ -68,11 +68,14 @@ export const TransactionForm = ({
 
   const handleSubmit = (values: FormValues) => {
     const amount = parseFloat(values.amount);
-    const amountInMiliunits = converAmountToMiliunits(amount);
+    // const amountInMiliunits = converAmountToMiliunits(amount); 新台幣不用轉換
+    console.log('amount', amount);
+
 
     onSubmit({
       ...values,
-      amount: amountInMiliunits,
+      amount: amount,
+      // amount: amountInMiliunits,
     });
   };
 
@@ -93,7 +96,7 @@ export const TransactionForm = ({
               <FormItem>
                 <FormControl>
                   <DatePicker
-                    value={field.value}
+                    value={field.value  as Date | undefined}
                     onChange={field.onChange}
                     disabled={disabled}
                   />
@@ -152,7 +155,8 @@ export const TransactionForm = ({
                   <Input
                     disabled={disabled}
                     placeholder="新增一位收款人"
-                    {...field}
+                    value={field.value ?? ""}
+                    onChange={field.onChange}
                   />
                 </FormControl>
               </FormItem>

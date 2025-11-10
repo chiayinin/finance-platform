@@ -9,6 +9,7 @@ import { client } from '@/lib/hono';
 import { formatCurrency } from '@/lib/utils';
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Badge } from '@/components/ui/badge';
 
 import { Actions } from './actions';
 
@@ -108,9 +109,11 @@ export const columns: ColumnDef<ResponseType>[] = [
     cell: ({row}) => {
       const amount = parseFloat(row.getValue('amount'));
       return(
-      <span>
+      <Badge
+        variant={amount < 0 ? 'destructive' : 'primary'}
+        className="text-xs font-medium px-3.5 py-2.5">
         {formatCurrency(amount)}
-      </span>)
+      </Badge>)
     }
   },
   {
