@@ -1,15 +1,18 @@
 "use client"
 
+import { format } from 'date-fns';
 import { InferResponseType } from 'hono';
 import { ArrowUpDown } from "lucide-react";
-import { client } from '@/lib/hono';
-import { Actions } from './actions';
-
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 
-export type ResponseType = InferResponseType<typeof client.api.accounts.$get, 200>['data'][0];
+import { client } from '@/lib/hono';
+import { formatCurrency } from '@/lib/utils';
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+
+import { Actions } from './actions';
+
+export type ResponseType = InferResponseType<typeof client.api.transactions.$get, 200>['data'][0];
 
 export const columns: ColumnDef<ResponseType>[] = [
   {
@@ -35,21 +38,83 @@ export const columns: ColumnDef<ResponseType>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "name",
+    accessorKey: "date",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          名稱
+          日期
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
     },
+    cell: ({row}) => {
+      const date = row.getValue('date') as Date;
+      return(
+      <span>
+        {format(date, "yyyy, MM/dd")}
+      </span>)
+    }
   },
   {
-    accessorKey: "actions",
+    accessorKey: "category",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          類別
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
+    cell: ({row}) => {
+      return(
+      <span>
+        {row.original.category}
+      </span>)
+    }
+  },
+  {
+    accessorKey: "payee",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          收款人
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    }
+  },
+  {
+    accessorKey: "amount",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          金額
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
+    cell: ({row}) => {
+      const amount = parseFloat(row.getValue('amount'));
+      return(
+      <span>
+        {formatCurrency(amount)}
+      </span>)
+    }
+  },
+  {
+    id: "actions",
     cell: ({ row }) => <Actions id={row.original.id} />,
   },
 ]
