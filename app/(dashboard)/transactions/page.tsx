@@ -63,7 +63,7 @@ const TransactionsPage = () => {
 
               deleteTransactions.mutate({ ids });
             }}
-            disabled={false}
+            disabled={isDisabled}
             />
         </CardContent>
       </Card>
