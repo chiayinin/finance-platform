@@ -292,7 +292,7 @@ const app = new Hono()
         .where(
           inArray(
             transactions.id,
-            sql`(select id from $(transactionsToDelete))`
+            sql`(select id from ${transactionsToDelete})`
           ),
         )
         .returning({ // 在刪除的同時回傳被刪除的資料欄位

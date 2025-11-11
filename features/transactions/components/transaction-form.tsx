@@ -69,8 +69,6 @@ export const TransactionForm = ({
   const handleSubmit = (values: FormValues) => {
     const amount = parseFloat(values.amount);
     // const amountInMiliunits = converAmountToMiliunits(amount); 新台幣不用轉換
-    console.log('amount', amount);
-
 
     onSubmit({
       ...values,
