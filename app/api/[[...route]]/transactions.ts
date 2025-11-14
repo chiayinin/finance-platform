@@ -138,7 +138,7 @@ const app = new Hono()
       z.array(
         insertTransactionSchema.omit({
           id: true,
-        })
+        }),
       ),
     ),
     async (ctx) => {
