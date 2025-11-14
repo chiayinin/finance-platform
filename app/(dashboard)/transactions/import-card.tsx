@@ -103,7 +103,8 @@ export const ImportCard = ({
       ...item,
       amount: parseFloat(item.amount),
       date: format(parse(item.date, dateFormat, new Date()), outputFormat),
-    }));
+    })
+  );
 
     onSubmit(formattedData);
   };

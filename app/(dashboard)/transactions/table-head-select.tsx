@@ -20,6 +20,13 @@ const options = [
   "date",
 ];
 
+const labelMap: Record<string, string> = {
+  skip: "跳過",
+  amount: "金額",
+  payee: "收款人",
+  date: "日期",
+}
+
 export const TableHeadSelect = ({
   columnIndex,
   selectedColumns,
@@ -38,10 +45,10 @@ export const TableHeadSelect = ({
           currentSelection && "text-indigo-500"
         )}
       >
-        <SelectValue placeholder="Skip" />
+        <SelectValue placeholder="跳過" />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="skip">Skip</SelectItem>
+        <SelectItem value="skip">{labelMap["skip"]}</SelectItem>
         {options.map((option, index) => {
           const disabled = Object.values(selectedColumns).includes(option) && selectedColumns[`column_${columnIndex}`] !== option;
 
@@ -52,7 +59,7 @@ export const TableHeadSelect = ({
             disabled={disabled}
             className="capitalize"
           >
-            {option}
+            {labelMap[option]}
           </SelectItem>
         )})}
       </SelectContent>
