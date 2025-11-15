@@ -19,7 +19,6 @@ export const useBulkCreateTransactions = () => {
   Error,
   RequestType>({
     mutationFn: async (json) => {
-
       const response = await client.api.transactions["bulk-create"]["$post"]({ json });
       return await response.json();
     },

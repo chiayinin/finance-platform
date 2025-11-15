@@ -49,7 +49,7 @@ export const useSelectAccount = (): [() => JSX.Element, () => Promise<unknown>] 
     handleClose();
   };
 
-  const AccountDialog = () => {
+  const ConfirmationDialog = () => {
     return(
     <Dialog open={promise !== null}>
       <DialogContent>
@@ -84,5 +84,5 @@ export const useSelectAccount = (): [() => JSX.Element, () => Promise<unknown>] 
     )
   };
 
-  return [AccountDialog, confirm];
+  return [ConfirmationDialog, confirm];
 };

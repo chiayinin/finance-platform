@@ -3,7 +3,7 @@ import z from 'zod';
 import { parse, subDays } from 'date-fns';
 import { clerkMiddleware, getAuth } from '@hono/clerk-auth';
 import { HTTPException } from 'hono/http-exception';
-import { and, eq, inArray, gte, lte, sql } from 'drizzle-orm';
+import { and, eq, inArray, gte, lte, sql, desc } from 'drizzle-orm';
 
 import { db } from '@/db/drizzle';
 import { transactions, insertTransactionSchema, categories, accounts } from '@/db/schema';
@@ -62,6 +62,7 @@ const app = new Hono()
             lte(transactions.date, endDate),
           )
         )
+        .orderBy(desc(transactions.date)); // 最新交易會在最上面，符合使用者期待。
 
       return ctx.json({ data });
     })

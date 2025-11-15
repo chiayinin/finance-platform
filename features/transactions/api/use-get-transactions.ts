@@ -27,7 +27,10 @@ export const useGetTransactions = () => {
 
       const { data } = await respones.json();
 
-      return data;
+      return data.map((transaction) => ({
+        ...transaction,
+        amount: Math.round(transaction.amount),
+      }));
     },
   });
 
