@@ -2,10 +2,14 @@
 
 import { useState } from "react";
 import { Loader2, Plus } from "lucide-react";
+import { toast } from "sonner";
 
 import { useNewTransaction } from "@/features/transactions/hooks/use-new-transaction";
 import { useGetTransactions } from "@/features/transactions/api/use-get-transactions";
 import { useBulkDeleteTransactions } from "@/features/transactions/api/use-bulk-delete-transactions";
+import { useBulkCreateTransactions } from "@/features/transactions/api/use-bulk-create-transactions";
+import { useSelectAccount } from "@/features/accounts/hooks/use-select-account";
+import { transactions as transactionSchema } from "@/db/schema";
 
 import { columns } from "./columns";
 import { UploadButton } from "./upload-button";
@@ -33,6 +37,7 @@ const INITIAL_IMPORT_RESULTS = {
 };
 
 const TransactionsPage = () => {
+  const [AccountDialog, confirm] = useSelectAccount();
   const [variant, setVariant] = useState<VARIANTS>(VARIANTS.LIST); // 切換為: 表單、匯入，兩種畫面。
   const [importResults, setImportResults] = useState(INITIAL_IMPORT_RESULTS);
 
@@ -47,10 +52,33 @@ const TransactionsPage = () => {
   };
 
   const newTransaction = useNewTransaction();
+  const createMutation = useBulkCreateTransactions();
   const transactionsQuery = useGetTransactions();
   const deleteTransactions = useBulkDeleteTransactions();
   const transactions = transactionsQuery.data || [];
   const isDisabled = transactionsQuery.isLoading || deleteTransactions.isPending;
+
+  const onsubmitImport = async (
+    values: typeof transactionSchema.$inferInsert[],
+  ) => {
+    const accountId = await confirm();
+
+    if(!accountId) {
+      return toast.error("請選擇一個帳戶後繼續下一步。");
+    }
+
+    const data = values.map((value) => ({
+      ...value,
+      amount: Math.round(value.amount),
+      accountId: accountId as string,
+    }));
+
+    createMutation.mutate(data, {
+      onSuccess: () => {
+        onCancelImport();
+      },
+    });
+  };
 
   if(transactionsQuery.isLoading) {
     return(
@@ -71,14 +99,12 @@ const TransactionsPage = () => {
 
   if(variant === VARIANTS.IMPORT) {
     return(<>
-      <div>
-        這是用來匯入資料的畫面。
-        <ImportCard
-          data={importResults.data}
-          onCancel={onCancelImport}
-          onSubmit={() => {}}
-        />
-      </div>
+      <AccountDialog />
+      <ImportCard
+        data={importResults.data}
+        onCancel={onCancelImport}
+        onSubmit={onsubmitImport}
+      />
     </>);
   };
 
