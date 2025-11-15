@@ -1,12 +1,13 @@
 import { toast } from "sonner";
-import { InferResponseType } from "hono";
+import { InferRequestType, InferResponseType } from "hono";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { client } from "@/lib/hono";
 
-type ResponesType = InferResponseType<typeof client.api.categories[':id']['$delete']>; // 推斷 route 的請求資料型別
+type ResponesType = InferResponseType<typeof client.api.transactions.$post>; // 推斷 route 的請求資料型別
+type RequestType = InferRequestType<typeof client.api.transactions.$post>["json"]; // 推斷 route 的回傳資料型別
 
-export const useDeleteCategory = (id?: string) => {
+export const useCreateTransaction = () => {
   // 快取控制器:
   // 手動更新快取（queryClient.setQueryData）
   // 重新抓取資料（queryClient.invalidateQueries）
@@ -15,22 +16,19 @@ export const useDeleteCategory = (id?: string) => {
   // 執行「寫入類型」的操作，處理 loading 狀態、錯誤、成功回呼等。
   const mutation = useMutation<
   ResponesType,
-  Error>({
-    mutationFn: async () => {
-      const response = await client.api.categories[':id']['$delete']({
-        param: { id }
-      });
+  Error,
+  RequestType>({
+    mutationFn: async (json) => {
+      const response = await client.api.transactions.$post({ json });
       return await response.json();
     },
     onSuccess: () => {
-      toast.success("成功刪除類別");
-      queryClient.invalidateQueries({ queryKey: ['category', { id }] });
-      queryClient.invalidateQueries({ queryKey: ['categories'] });
+      toast.success("成功建立交易紀錄");
       queryClient.invalidateQueries({ queryKey: ['transactions'] });
-      // TODO: Invalidate summary and transactions
+      // TODO: Invalidate summary
     },
     onError: () => {
-      toast.error("刪除類別失敗")
+      toast.error("建立交易紀錄失敗")
     },
   });
 

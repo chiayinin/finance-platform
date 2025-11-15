@@ -1,7 +1,7 @@
 "use client"
 
 import { useNewAccount } from "@/features/accounts/hooks/use-new-account";
-import { useBulkDeleteAccount } from "@/features/accounts/api/use-bulk-delete";
+import { useBulkDeleteAccount } from "@/features/accounts/api/use-bulk-delete-accounts";
 import { columns } from "./columns";
 
 import { Loader2, Plus } from "lucide-react";
