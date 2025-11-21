@@ -1,3 +1,5 @@
+"use client";
+
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
@@ -23,7 +25,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider localization={zhTW}
+    <ClerkProvider
+      localization={zhTW}
+      afterSignOutUrl="/"
       appearance={{
         cssLayerName: 'clerk',
         baseTheme: neobrutalism,
@@ -34,9 +38,9 @@ export default function RootLayout({
         },
         variables: {
           colorPrimary: '#6366f1',
-        }
+        },
     }}>
-      <html lang="en">
+      <html lang="zh-TW">
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
