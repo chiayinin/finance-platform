@@ -29,24 +29,27 @@ export const DataGrid = () => {
 
   return(
     <div className="grid grid-coles-1 lg:grid-cols-3 gap-8 pb-2 mb-8">
+      {/* Remaining */}
       <DataCard
-        title="Remaining"
+        title="結餘"
         value={data?.remainingAmount}
         percentageChange={data?.remainingChange}
         icon={FaPiggyBank}
         variant="default"
         dateRange={dateRangeLabel}
       />
+      {/* Income */}
       <DataCard
-        title="Income"
+        title="收入"
         value={data?.incomeAmount}
         percentageChange={data?.incomeChange}
         icon={FaArrowTrendUp}
         variant="default"
         dateRange={dateRangeLabel}
       />
+      {/* Expenses */}
       <DataCard
-        title="Expenses"
+        title="支出"
         value={data?.expensesAmount}
         percentageChange={data?.expensesChange}
         icon={FaArrowTrendDown}

@@ -39,9 +39,9 @@ const app = new Hono()
         ? parse(to, "yyyy-MM-dd", new Date())
         : defaultTo;
 
-      const periodLength = differenceInDays(endDate, startDate) + 1;
-      const lastPeriodStart = subDays(startDate, periodLength);
-      const lastPeriodEnd = subDays(endDate, periodLength);
+        const periodLength = differenceInDays(endDate, startDate) + 1;
+        const lastPeriodStart = subDays(startDate, periodLength);
+        const lastPeriodEnd = subDays(endDate, periodLength);
 
       const fetchFinanciaData = async (
         userId: string,
