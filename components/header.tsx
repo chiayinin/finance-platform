@@ -6,7 +6,7 @@ import { WelcomeMsg } from "@/components/welcomeMsg";
 
 export const Header = () => {
   return(
-  <div className="bg-gradient-to-br from-indigo-600 to-indigo-200 px-4 py-8 lg:px-14 pb-36">
+  <div className="bg-linear-to-br from-indigo-600 to-indigo-200 px-4 py-8 lg:px-14 pb-36">
     <div className="max-w-screen-2xl mx-auto">
       <div className="w-full flex justify-between items-center mb-14">
         <div className="flex items-center lg:gap-x-16">

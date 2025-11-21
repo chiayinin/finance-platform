@@ -1,6 +1,7 @@
 import { twMerge } from "tailwind-merge";
 import { clsx, type ClassValue } from "clsx";
-import { eachDayOfInterval, isSameDay } from "date-fns";
+import { eachDayOfInterval, format, isSameDay, subDays } from "date-fns";
+import { formatDate } from '@/lib/date';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -24,7 +25,7 @@ export function formatCurrency(value: number) {
   }).format(value);
 };
 
-export function calculcatePercentageChange(
+export function calculatePercentageChange(
   current: number,
   previous: number,
 ) {
@@ -69,4 +70,40 @@ export function fillMissingDays(
   });
 
   return transactionsByDay;
+};
+
+type Period = {
+  from: string | Date | undefined;
+  to: string | Date | undefined;
+};
+
+export function formatDateRange(period?: Period) {
+  const defaultTo = new Date();
+  const defaultFrom = subDays(defaultTo, 30);
+
+  if(!period?.from) {
+    return `${formatDate(defaultFrom, "LLL dd")} - ${formatDate(defaultTo, "LLL dd, y")}`;
+  }
+  if(period?.to) {
+    return `${formatDate(period.from, "LLL dd")} - ${formatDate(period.to, "LLL dd, y")}`;
+  }
+
+  return formatDate(period.from, 'LLL dd, y');
+};
+
+export function formatPercentage(
+  value: number,
+  option: { addPrefix?: boolean } = {
+    addPrefix: false,
+  },
+) {
+  const result = new Intl.NumberFormat("zh-TW", {
+    style: "percent",
+  }).format(value / 100);
+
+  if(option.addPrefix && value > 0) {
+    return `+${result}`;
+  }
+
+  return result;
 };
