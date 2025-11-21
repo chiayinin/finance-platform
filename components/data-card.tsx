@@ -96,7 +96,7 @@ export const DataCard = ({
           percentageChange > 0 && "text-emerald-500",
           percentageChange < 0 && "text-rose-500"
         )}>
-          與上期相比 {formatPercentage(percentageChange)} 變化。
+          與上期相比 {formatPercentage(percentageChange, { addPrefix: true })} 變化。
         </p>
       </CardContent>
     </Card>
