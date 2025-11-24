@@ -77,6 +77,7 @@ const app = new Hono()
         startDate,
         endDate,
       );
+
       const [lastPeriod] = await fetchFinanciaData(
         auth.userId,
         lastPeriodStart,
@@ -135,19 +136,19 @@ const app = new Hono()
       const otherSum = otherCategories
         .reduce((sum, current) => sum + current.value, 0);
 
-        const finalCategories = topCategories;
-        if(otherCategories.length > 0) {
-          finalCategories.push({
-            name: 'Other',
-            value: otherSum,
-          });
-        }
+      const finalCategories = topCategories;
+      if(otherCategories.length > 0) {
+        finalCategories.push({
+          name: 'Other',
+          value: otherSum,
+        });
+      }
 
       const activeDays = await db
         .select({
           date: transactions.date,
           income: sql`SUM(CASE WHEN ${transactions.amount} >= 0 THEN ${transactions.amount} ELSE 0 END)`.mapWith(Number),
-          expenses: sql`SUM(CASE WHEN ${transactions.amount} < 0 THEN ${transactions.amount} ELSE 0 END)`.mapWith(Number),
+          expenses: sql`SUM(CASE WHEN ${transactions.amount} < 0 THEN ABS(${transactions.amount}) ELSE 0 END)`.mapWith(Number),
         })
         .from(transactions)
         .innerJoin(
@@ -170,13 +171,14 @@ const app = new Hono()
         )
         .groupBy(transactions.date)
         .orderBy(transactions.date);
+        console.log('activeDays', activeDays);
+
 
       const days = fillMissingDays(
         activeDays,
         startDate,
         endDate,
       );
-
 
       return ctx.json({
         data: {
