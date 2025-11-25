@@ -7,6 +7,7 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { AreaVariant } from "@/components/area-variant";
+import { BarVariant } from "@/components/bar-variant";
 
 type Props = {
   data?: {
@@ -34,7 +35,8 @@ export const Chart = ({ data = [] }: Props) => {
             </p>
           </div>
         ) : (
-          <AreaVariant data={data} />
+          // <AreaVariant data={data} />
+          <BarVariant data={data} />
         )}
       </CardContent>
     </Card>
