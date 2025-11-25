@@ -82,13 +82,13 @@ export function formatDateRange(period?: Period) {
   const defaultFrom = subDays(defaultTo, 30);
 
   if(!period?.from) {
-    return `${formatDate(defaultFrom, "LLL dd")} - ${formatDate(defaultTo, "LLL dd, y")}`;
+    return `${formatDate(defaultFrom, "LLL do")} - ${formatDate(defaultTo, "LLL do, y")}`;
   }
   if(period?.to) {
-    return `${formatDate(period.from, "LLL dd")} - ${formatDate(period.to, "LLL dd, y")}`;
+    return `${formatDate(period.from, "LLL do")} - ${formatDate(period.to, "LLL do, y")}`;
   }
 
-  return formatDate(period.from, 'LLL dd, y');
+  return formatDate(period.from, 'LLL do, y');
 };
 
 export function formatPercentage(
