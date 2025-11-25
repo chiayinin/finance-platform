@@ -33,6 +33,7 @@ export const useGetSummary = () => {
         expensesAmount: Math.round(data.expensesAmount),
         remainingAmount: Math.round(data.remainingAmount),
         categories: data.categories.map((category) => ({
+          ...category,
           value: Math.round(category.value),
         })),
         days: data.days.map((day) => ({

@@ -131,18 +131,19 @@ const app = new Hono()
           sql`SUM(ABS(${transactions.amount}))`
         ));
 
-      const topCategories = category.slice(0, 3);
-      const otherCategories = category.slice(3);
-      const otherSum = otherCategories
+
+        const topCategories = category.slice(0, 3);
+        const otherCategories = category.slice(3);
+        const otherSum = otherCategories
         .reduce((sum, current) => sum + current.value, 0);
 
-      const finalCategories = topCategories;
-      if(otherCategories.length > 0) {
-        finalCategories.push({
-          name: 'Other',
-          value: otherSum,
-        });
-      }
+        const finalCategories = topCategories;
+        if(otherCategories.length > 0) {
+          finalCategories.push({
+            name: 'Other',
+            value: otherSum,
+          });
+        }
 
       const activeDays = await db
         .select({
