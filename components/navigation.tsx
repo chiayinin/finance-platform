@@ -10,7 +10,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/s
 
 const routes = [
   {
-    href: '/overview',
+    href: '/',
     label: 'Overview',
   },
   {

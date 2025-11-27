@@ -39,10 +39,11 @@ export const columns: ColumnDef<ResponseType>[] = [
     header: ({ column }) => {
       return (
         <Button
+          className="has-[>svg]:px-0"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          名稱
+          類別名稱
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
@@ -50,6 +51,7 @@ export const columns: ColumnDef<ResponseType>[] = [
   },
   {
     accessorKey: "actions",
+    header: "其他操作",
     cell: ({ row }) => <Actions id={row.original.id} />,
   },
 ]

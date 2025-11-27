@@ -45,7 +45,7 @@ const AccountsPage = () => {
       <Card className="border-none drop-shadow-sm">
         <CardHeader className="lg:flex gap-y-2 lg:flex-row lg:justify-between lg:items-center">
           <CardTitle className="text-xl line-clamp-1">
-            帳號管理
+            帳戶管理
           </CardTitle>
           <Button onClick={newAccount.onOpen} size="sm">
             <Plus className="size-4 mr-2" />
