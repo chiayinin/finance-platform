@@ -25,7 +25,7 @@ export const useBulkDeleteCategories = () => {
     onSuccess: () => {
       toast.success("成功刪除選取類別");
       queryClient.invalidateQueries({ queryKey: ['categories'] });
-      // TODO: Also inalidate summary
+      queryClient.invalidateQueries({ queryKey: ['summary'] });
     },
     onError: () => {
       toast.error("刪除類別失敗")

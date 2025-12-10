@@ -25,7 +25,7 @@ export const useBulkDeleteTransactions = () => {
     onSuccess: () => {
       toast.success("成功刪除所有的交易紀錄");
       queryClient.invalidateQueries({ queryKey: ['transactions'] });
-      // TODO: Also inalidate summary
+      queryClient.invalidateQueries({ queryKey: ['summary'] });
     },
     onError: () => {
       toast.error("刪除所有的交易紀錄失敗")
