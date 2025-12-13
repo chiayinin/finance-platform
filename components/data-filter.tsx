@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { format, subDays } from "date-fns";
 import { zhTW } from "date-fns/locale";
 import { DateRange } from "react-day-picker";
@@ -32,8 +32,8 @@ export const DataFilter = () => {
   const from = params.get("from") || "";
   const to = params.get("to") || "";
 
-  const defaultTo = new Date();
-  const defaultFrom = subDays(defaultTo, 30);
+  const defaultTo = useMemo(() => new Date(), []);
+  const defaultFrom = useMemo(() => subDays(defaultTo, 30), [defaultTo]);
 
   const paramState = {
     from: from ? new Date(from) : defaultFrom,
@@ -42,9 +42,15 @@ export const DataFilter = () => {
 
   const [date, setDate] = useState<DateRange | undefined>(paramState);
 
-  const pushToUrl = (dateRange: DateRange | undefined) => {
-    console.log('dateRange',dateRange);
+  useEffect(() => {
+  const newState: DateRange = {
+      from: from ? new Date(from) : defaultFrom,
+      to: to ? new Date(to) : defaultTo,
+    };
+    setDate(newState);
+  }, [from, to, defaultFrom, defaultTo]);
 
+  function pushToUrl(dateRange: DateRange | undefined) {
     const query = {
       from: format(dateRange?.from || defaultFrom, "yyyy-MM-dd"),
       to: format(dateRange?.to || defaultTo, "yyyy-MM-dd"),
@@ -55,11 +61,8 @@ export const DataFilter = () => {
       query,
     }, { skipNull: true, skipEmptyString: true });
 
-    console.log('url', url);
-
-
     router.push(url);
-  };
+  }
 
   const onReset = () => {
     setDate(undefined);
