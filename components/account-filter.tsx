@@ -28,7 +28,7 @@ export const AccountFilter = () => {
   const to = params.get("to") || "";
 
   const {
-    isLoading: isLoandingSummary,
+    isLoading: isLoadingSummary,
   } = useGetSummary();
   const {
     data: accounts,
@@ -58,7 +58,7 @@ export const AccountFilter = () => {
     <Select
       value={accountId}
       onValueChange={onChange}
-      disabled={isLoadingAccounts || isLoandingSummary}
+      disabled={isLoadingAccounts || isLoadingSummary}
     >
       <SelectTrigger
         className="lg:w-auto w-full h-9 rounded-md px-3 font-normal bg-white/20 hover:bg-white/30 hover:text-white  border-none focus:ring-offset-0 focus:ring-transparent outline-none text-white! focus:bg-white/30 transition"

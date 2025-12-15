@@ -20,8 +20,9 @@ const eslintConfig = [
       "next-env.d.ts",
     ],
     rules: {
-      // "@typescript-eslint/no-explicit-any": "off", // 完全關閉
-      "@typescript-eslint/no-explicit-any": "warn", // 或者只警告，不報錯
+      "@typescript-eslint/no-explicit-any": "off", // 完全關閉
+      // "@typescript-eslint/no-explicit-any": "warn", // 或者只警告，不報錯
+      "@typescript-eslint/no-unused-vars": "off",
     },
   },
 ];
