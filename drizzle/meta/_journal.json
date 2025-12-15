@@ -1,0 +1,34 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1761395831681,
+      "tag": "0000_common_mandroid",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1761396685624,
+      "tag": "0001_aspiring_firebird",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1762171033439,
+      "tag": "0002_small_tyger_tiger",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1762324810033,
+      "tag": "0003_known_night_thrasher",
+      "breakpoints": true
+    }
+  ]
+}

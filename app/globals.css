@@ -1,4 +1,8 @@
+@layer theme, base, clerk, components, utilities;
 @import "tailwindcss";
+@import '@clerk/themes/shadcn.css';
+@import '../styles/_components.scss';
+
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
@@ -118,5 +122,9 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
   }
 }
