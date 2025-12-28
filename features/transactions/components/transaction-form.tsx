@@ -128,10 +128,10 @@ export const TransactionForm = ({
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>類別</FormLabel>
+                <FormLabel>分類</FormLabel>
                 <FormControl>
                   <Select
-                    placeholder="選擇一個類別"
+                    placeholder="選擇一個分類"
                     options={categoryOptions}
                     onCreate={onCreateCategory}
                     value={field.value}

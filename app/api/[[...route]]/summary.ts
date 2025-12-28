@@ -121,7 +121,6 @@ const app = new Hono()
           and(
             accountId ? eq(transactions.accountId, accountId) : undefined,
             eq(accounts.userId, auth.userId),
-            lt(transactions.amount, 0),
             gte(transactions.date, startDate),
             lte(transactions.date, endDate),
           )
@@ -132,18 +131,18 @@ const app = new Hono()
         ));
 
 
-        const topCategories = category.slice(0, 3);
-        const otherCategories = category.slice(3);
-        const otherSum = otherCategories
-        .reduce((sum, current) => sum + current.value, 0);
+      const topCategories = category.slice(0, 3);
+      const otherCategories = category.slice(3);
+      const otherSum = otherCategories
+      .reduce((sum, current) => sum + current.value, 0);
 
-        const finalCategories = topCategories;
-        if(otherCategories.length > 0) {
-          finalCategories.push({
-            name: 'Other',
-            value: otherSum,
-          });
-        }
+      const finalCategories = topCategories;
+      if(otherCategories.length > 0) {
+        finalCategories.push({
+          name: 'Other',
+          value: otherSum,
+        });
+      }
 
       const activeDays = await db
         .select({
@@ -165,7 +164,6 @@ const app = new Hono()
               eq(transactions.accountId, accountId)
               : undefined,
             eq(accounts.userId, auth.userId),
-            lt(transactions.amount, 0),
             gte(transactions.date, startDate),
             lte(transactions.date, endDate),
           )

@@ -23,14 +23,14 @@ export const useDeleteCategory = (id?: string) => {
       return await response.json();
     },
     onSuccess: () => {
-      toast.success("成功刪除類別");
+      toast.success("成功刪除分類");
       queryClient.invalidateQueries({ queryKey: ['category', { id }] });
       queryClient.invalidateQueries({ queryKey: ['categories'] });
       queryClient.invalidateQueries({ queryKey: ['transactions'] });
       // TODO: Invalidate summary and transactions
     },
     onError: () => {
-      toast.error("刪除類別失敗")
+      toast.error("刪除分類失敗")
     },
   });
 

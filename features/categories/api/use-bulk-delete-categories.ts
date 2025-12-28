@@ -23,12 +23,12 @@ export const useBulkDeleteCategories = () => {
       return await response.json();
     },
     onSuccess: () => {
-      toast.success("成功刪除選取類別");
+      toast.success("成功刪除選取分類");
       queryClient.invalidateQueries({ queryKey: ['categories'] });
       queryClient.invalidateQueries({ queryKey: ['summary'] });
     },
     onError: () => {
-      toast.error("刪除類別失敗")
+      toast.error("刪除分類失敗")
     },
   });
 

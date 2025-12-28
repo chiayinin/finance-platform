@@ -1,11 +1,11 @@
-import { Loader2 } from "lucide-react";
-import { UserButton, ClerkLoading, ClerkLoaded } from "@clerk/nextjs";
 import { HeaderLogo } from "@/components/headerLogo";
 import { Navigation } from "@/components/navigation";
 import { WelcomeMsg } from "@/components/welcomeMsg";
 import { Filters } from "@/components/filters";
+import { UserButtonClient } from "@/components/user-button-client";
 
 export const Header = () => {
+
   return(
   <div className="bg-linear-to-br from-indigo-600 to-indigo-200 px-4 py-8 lg:px-14 pb-36">
     <div className="max-w-screen-2xl mx-auto">
@@ -14,12 +14,7 @@ export const Header = () => {
           <HeaderLogo />
           <Navigation />
         </div>
-        <ClerkLoaded>
-          <UserButton />
-        </ClerkLoaded>
-        <ClerkLoading>
-          <Loader2 className="size-8 animate-spin text-slate-600"/>
-        </ClerkLoading>
+        <UserButtonClient/>
       </div>
       <WelcomeMsg />
       <Filters />

@@ -25,7 +25,7 @@ export const categories = pgTable('categories', {
   userId: text('user_id').notNull(),
 });
 
-export const categoriesRelations = relations(categories, ({ many }) => ({ // 「一對多」關係：一個類別對應多筆交易
+export const categoriesRelations = relations(categories, ({ many }) => ({ // 「一對多」關係：一個分類對應多筆交易
   transactions: many(transactions),
 }));
 

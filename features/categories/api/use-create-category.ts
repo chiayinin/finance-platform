@@ -23,11 +23,11 @@ export const useCreateCategory = () => {
       return await response.json();
     },
     onSuccess: () => {
-      toast.success("成功建立類別");
+      toast.success("成功建立分類");
       queryClient.invalidateQueries({ queryKey: ['categories'] });
     },
     onError: () => {
-      toast.error("建立類別失敗")
+      toast.error("建立分類失敗")
     },
   });
 

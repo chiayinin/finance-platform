@@ -71,7 +71,7 @@ export const CategoryForm = ({
             )}>
           </FormField>
           <Button className="w-full" disabled={disabled}>
-            {id ? "儲存變更" : "建立類別"}
+            {id ? "儲存變更" : "建立分類"}
           </Button>
           {!!id && (
             <Button
@@ -82,7 +82,7 @@ export const CategoryForm = ({
               variant="outline"
             >
               <Trash className="size-4 mr-2"/>
-              刪除類別
+              刪除分類
             </Button>
           )}
       </form>

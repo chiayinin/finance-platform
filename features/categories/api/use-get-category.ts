@@ -12,7 +12,7 @@ export const useGetCategory = (id?: string) => {
 
       // 因為不是 axios 不會自動處理錯誤
       if(!respones.ok) {
-        throw new Error("無法取得此類別。");
+        throw new Error("無法取得此分類。");
       }
 
       const { data } = await respones.json();

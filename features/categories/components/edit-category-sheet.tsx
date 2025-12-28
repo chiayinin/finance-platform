@@ -28,7 +28,7 @@ export const EditCategorySheet = () => {
 
   const [ConfirmDialog, confirm] = useConfirm(
     "你確定嗎？",
-    "你即將刪除此類別"
+    "你即將刪除此分類"
   );
 
   const categoryQuery = useGetCategory(id);
@@ -69,9 +69,9 @@ export const EditCategorySheet = () => {
     <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent className="space-y-4">
         <SheetHeader>
-          <SheetTitle>編輯類別資訊</SheetTitle>
+          <SheetTitle>編輯分類資訊</SheetTitle>
           <SheetDescription>
-            編輯現有類別。
+            編輯現有分類。
           </SheetDescription>
         </SheetHeader>
         {isLoading

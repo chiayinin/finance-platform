@@ -26,14 +26,14 @@ export const useEditCategory = (id?: string) => {
       return await response.json();
     },
     onSuccess: () => {
-      toast.success("成功更新類別");
+      toast.success("成功更新分類");
       queryClient.invalidateQueries({ queryKey: ['category', { id }] });
       queryClient.invalidateQueries({ queryKey: ['categories'] });
       queryClient.invalidateQueries({ queryKey: ['transactions'] });
       queryClient.invalidateQueries({ queryKey: ['summary'] });
     },
     onError: () => {
-      toast.error("編輯類別失敗")
+      toast.error("編輯分類失敗")
     },
   });
 

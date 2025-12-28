@@ -45,7 +45,7 @@ const CategoriesPage = () => {
       <Card className="border-none drop-shadow-sm">
         <CardHeader className="lg:flex gap-y-2 lg:flex-row lg:justify-between lg:items-center">
           <CardTitle className="text-xl line-clamp-1">
-            類別管理
+            分類管理
           </CardTitle>
           <Button onClick={newCategory.onOpen} size="sm">
             <Plus className="size-4 mr-2" />

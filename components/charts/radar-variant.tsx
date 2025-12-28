@@ -24,7 +24,10 @@ export const RadarVariant = ({ data }: Props) => {
         data={data}
       >
         <PolarGrid />
-        <PolarAngleAxis style={{ fontSize: "12px" }} dataKey="name" />
+        <PolarAngleAxis
+          style={{ fontSize: "12px" }}
+          dataKey="name"
+          tickFormatter={(value) => `分類：${value}`} />
         <PolarRadiusAxis style={{ fontSize: "12px" }} />
         <Radar dataKey="value" stroke="#6366f1" fill="#6366f1" fillOpacity={0.6} />
       </RadarChart>

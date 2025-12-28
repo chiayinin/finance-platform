@@ -71,7 +71,7 @@ export const columns: ColumnDef<ResponseType>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          類別
+          分類
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )

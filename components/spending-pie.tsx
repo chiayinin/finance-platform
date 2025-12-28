@@ -38,7 +38,7 @@ export const SpendingPie = ({ data = [] }: Props) => {
     <Card className="border-none drop-shadow-sm">
       <CardHeader className="flex space-y-2 lg:space-y-0 lg:flex-row lg:items-center justify-between">
         <CardTitle className="text-xl line-clamp-1">
-          類別圖表
+          分類統計圖表
         </CardTitle>
         <Select
           defaultValue={chartType}
