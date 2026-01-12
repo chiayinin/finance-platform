@@ -10,7 +10,7 @@
 * [專案結構](#專案結構)
 * [安裝與啟動](#安裝與啟動)
 * [執行腳本](#執行腳本)
-* [面試能力亮點](#面試能力亮點)
+* [本專案亮點](#本專案亮點)
 * [貢獻方式](#貢獻方式)
 * [授權](#授權)
 
@@ -19,6 +19,9 @@
 ## Demo
 
 > [好金主 SaaS 平台](https://finance-platform-theta.vercel.app/)
+> <img width="2360" height="1476" alt="finance001" src="https://github.com/user-attachments/assets/9999c8d9-4fb1-4bc3-9d79-32e294e2e155" />
+> <img width="2636" height="1412" alt="finance002" src="https://github.com/user-attachments/assets/448327c6-2e3a-4749-b0a3-b8a8f2dcfe35" />
+> <img width="2674" height="1506" alt="finance003" src="https://github.com/user-attachments/assets/c5813b65-7177-479b-8147-131ea2d2bc52" />
 
 ---
 
@@ -127,9 +130,7 @@ npm run db:generate
 
 ---
 
-## 面試能力亮點
-
-這個區塊專為面試設計，凸顯你的技術能力與專案價值：
+## 本專案亮點
 
 * **前端架構設計**
 
@@ -165,12 +166,10 @@ npm run db:generate
 
 ## 貢獻方式
 
-> 此專案主要為個人作品與面試用途，但歡迎 PR 建議優化或修正錯誤。
+> 此專案主要為個人作品與面試用途。
 
 ---
 
 ## 授權
 
 此專案 **Private**，僅用於個人作品集與面試展示。
-
-你希望我幫你做這個版本嗎？
